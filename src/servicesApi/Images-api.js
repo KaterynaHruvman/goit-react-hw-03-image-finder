@@ -4,12 +4,11 @@ import axios from 'axios';
 const API_KEY = '20764916-f72ac860731c159c811384133';
 const BASE_URL = 'http://pixabay.com/api/?';
 
-const fetchImg = ({ query = ' ', currentPage = 1 }) => {
+const fetchImg = ({ searchQuery = '', currentPage = 1 }) => {
     return axios
         .get(
-            `${BASE_URL}=${query}&page=${currentPage}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`,
+            `${BASE_URL}=${searchQuery}&page=${currentPage}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`,
         )
-        .then(response => response.data.hits);
+        .then(({ data }) => data.hits);
 };
-
 export default { fetchImg };

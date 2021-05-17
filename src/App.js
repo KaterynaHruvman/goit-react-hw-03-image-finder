@@ -4,6 +4,7 @@ import API from './servicesApi/Images-api';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Modal from './components/Modal/Modal';
 import SpinnerPage from './components/LoaderButton/LoaderButton';
+import Button from './components/Button/Button';
 
 class App extends Component {
     state = {
@@ -11,17 +12,17 @@ class App extends Component {
         alt: '',
         showModal: false,
         imgGallery: [],
-        query: '',
+        searchQuery: '',
         currentPage: 1,
         bigImg: '',
         bigImgTags: '',
-        fetchLength: '',
+
         isLoading: false,
         error: null,
     };
     componentDidUpdate(_prevProps, prevState) {
-        const { query } = this.state;
-        if (prevState.query !== query) {
+        // const { query } = this.state;
+        if (prevState.searchQuery !== this.state.searchQuery) {
             console.log('fetching images...');
             this.fetchImg();
         }
@@ -33,7 +34,7 @@ class App extends Component {
     };
     onChangeQuery = query => {
         this.setState({
-            query,
+            searchQuery: query,
             currentPage: 1,
             imgGallery: [],
             error: null,
@@ -44,8 +45,8 @@ class App extends Component {
     };
 
     fetchImg = () => {
-        const { currentPage, query } = this.state;
-        const options = { query, currentPage };
+        const { currentPage, searchQuery } = this.state;
+        const options = { searchQuery, currentPage };
         this.setState({ isLoading: true });
         API.fetchImg(options)
             .then(imgGallery => {
@@ -69,17 +70,9 @@ class App extends Component {
         this.setState({ bigImg: img, bigImgTags: imgTags, showModal: true });
     };
     render() {
-        const {
-            imgGallery,
-            isLoading,
-            error,
-            showModal,
-            bigImg,
-            bigImgTags,
-            fetchLength,
-        } = this.state;
-        const shouldRenderLoadMoreButton =
-            imgGallery.length > 0 && fetchLength === 12 && !isLoading;
+        const { imgGallery, isLoading, error, showModal, bigImg, bigImgTags } =
+            this.state;
+        const shouldRenderLoadMoreButton = imgGallery.length > 0 && !isLoading;
 
         return (
             <div>
@@ -104,13 +97,11 @@ class App extends Component {
                 {isLoading && <SpinnerPage />}
 
                 {shouldRenderLoadMoreButton && (
-                    <button type="button" onClick={this.fetchImg}>
-                        Загрузить ещё...
-                    </button>
+                    <Button onClick={this.fetchImg} />
                 )}
             </div>
         );
     }
 }
-console.log(SearchBar);
+
 export default App;

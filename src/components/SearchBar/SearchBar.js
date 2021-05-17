@@ -4,22 +4,23 @@ import styles from './SearchBar.module.css';
 
 class Searchbar extends Component {
     state = {
-        imageName: '',
+        imgGallery: [],
+        searchQuery: '',
     };
 
     handleChange = event => {
-        this.setState({ imageName: event.currentTarget.value });
+        this.setState({ searchQuery: event.currentTarget.value });
         console.log('imageName after changing input: ', {
-            imageName: event.currentTarget.value,
+            searchQuery: event.currentTarget.value,
         });
     };
 
     loadGallery = event => {
         event.preventDefault(); //чтобы не перегружать страницу при Сабмите формы
 
-        this.props.onSubmit(this.state.imageName); //
+        this.props.onSubmit(this.state.searchQuery); //
 
-        this.setState({ imageName: '' }); //обновляем строку приновом запросе
+        this.setState({ searchQuery: '' }); //обновляем строку приновом запросе
     };
 
     render() {
@@ -38,7 +39,7 @@ class Searchbar extends Component {
                         autoComplete="off"
                         autoFocus
                         placeholder="Search images and photos"
-                        value={this.state.imageName}
+                        value={this.state.searchQuery}
                         onChange={this.handleChange}
                     />
                 </form>
