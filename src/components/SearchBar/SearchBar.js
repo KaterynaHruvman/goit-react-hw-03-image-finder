@@ -9,14 +9,17 @@ class Searchbar extends Component {
 
     handleChange = event => {
         this.setState({ imageName: event.currentTarget.value });
+        console.log('imageName after changing input: ', {
+            imageName: event.currentTarget.value,
+        });
     };
 
     loadGallery = event => {
-        event.preventDefault();
+        event.preventDefault(); //чтобы не перегружать страницу при Сабмите формы
 
-        this.props.onSubmit(this.state.imageName);
+        this.props.onSubmit(this.state.imageName); //
 
-        this.setState({ imageName: '' });
+        this.setState({ imageName: '' }); //обновляем строку приновом запросе
     };
 
     render() {
@@ -25,7 +28,7 @@ class Searchbar extends Component {
                 <form className={styles.SearchForm} onSubmit={this.loadGallery}>
                     <button type="submit" className={styles.SearchFormbutton}>
                         <span className={styles.SearchFormbuttonlabel}>
-                            ИСКАТЬ
+                            Search
                         </span>
                     </button>
 

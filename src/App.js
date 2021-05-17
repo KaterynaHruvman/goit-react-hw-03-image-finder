@@ -19,9 +19,10 @@ class App extends Component {
         isLoading: false,
         error: null,
     };
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(_prevProps, prevState) {
         const { query } = this.state;
         if (prevState.query !== query) {
+            console.log('fetching images...');
             this.fetchImg();
         }
     }
@@ -36,6 +37,9 @@ class App extends Component {
             currentPage: 1,
             imgGallery: [],
             error: null,
+        });
+        console.log('query after changing input: ', {
+            query,
         });
     };
 
@@ -65,9 +69,17 @@ class App extends Component {
         this.setState({ bigImg: img, bigImgTags: imgTags, showModal: true });
     };
     render() {
-        const { imgGallery, isLoading, error, showModal, bigImg, bigImgTags } =
-            this.state;
-        const shouldRenderLoadMoreButton = imgGallery.length > 0 && !isLoading;
+        const {
+            imgGallery,
+            isLoading,
+            error,
+            showModal,
+            bigImg,
+            bigImgTags,
+            fetchLength,
+        } = this.state;
+        const shouldRenderLoadMoreButton =
+            imgGallery.length > 0 && fetchLength === 12 && !isLoading;
 
         return (
             <div>
@@ -82,7 +94,13 @@ class App extends Component {
 
                 <SearchBar onSubmit={this.onChangeQuery} />
 
-                {<ImageGallery img={imgGallery} onClick={this.onImgClick} />}
+                {
+                    <ImageGallery
+                        img={imgGallery}
+                        title={this.onChangeQuery}
+                        onClick={this.onImgClick}
+                    />
+                }
                 {isLoading && <SpinnerPage />}
 
                 {shouldRenderLoadMoreButton && (
@@ -94,5 +112,5 @@ class App extends Component {
         );
     }
 }
-
+console.log(SearchBar);
 export default App;
